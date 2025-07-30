@@ -1,0 +1,136 @@
+-- Databricks notebook source
+-- MAGIC %md <img src="https://github.com/Databricks-BR/lab_genai/blob/main/img/header.png?raw=true" width=100%>
+-- MAGIC
+-- MAGIC # Hands-on 1/ Databricks SQL: Extraia valor dos dados com IA
+-- MAGIC
+-- MAGIC Nesse workshop abordaremos utilizar IA no Databricks SQL, onde analistas, engenheiros, cientistas e usuários de negocio, poderam extrair valor dos dados com IA utilizando a linguagem SQL.
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ## 4/ APIs de foundation model do Databricks
+-- MAGIC
+-- MAGIC ### Databricks Model Serving
+-- MAGIC
+-- MAGIC Com o Databricks Model serving é possível realizar o gerenciamento unificado de todos os modelos que você precisa servir. Ele oferece uma interface unificada para gerenciar e integrar modelos de IA via API REST, adequando-se a aplicações web e clients. Com alta disponibilidade e baixa latência, o serviço ajusta automaticamente a escala de recursos para atender à demanda variável, utilizando computação sem servidor para eficiência de custos. Os usuários podem implantar modelos personalizados, modelos abertos de ponta com suporte para inferência otimizada e modelos externos, com controles centralizados e gestão de acesso
+-- MAGIC
+-- MAGIC <img src="https://github.com/anasanchezss9/databricks_sql_e_openai/blob/main/images/model-serving.png?raw=true" width="1200">
+-- MAGIC
+-- MAGIC
+-- MAGIC
+-- MAGIC ## O que são as APIs de foundation model do Databricks?
+-- MAGIC O Serviço de Modelo do Databricks agora dá suporte a APIs de Modelo de Fundação que permitem acessar e consultar modelos abertos de última geração de um ponto de extremidade de serviço. Com as APIs do Modelo Base, você pode criar aplicativos de maneira rápida e fácil que aproveitam um modelo de IA generativa de alta qualidade sem manter uma implantação de modelo própria.
+-- MAGIC
+-- MAGIC ### Usar APIs de foundation model
+-- MAGIC
+-- MAGIC Esses modelos são acessíveis no workspace do Azure Databricks. Para acessá-los em seu workspace, navegue até a guia <img src="https://github.com/anasanchezss9/databricks_sql_e_openai/blob/main/images/serving menu.png?raw=true" width="160"> na barra lateral esquerda. As APIs de foundation model estão localizadas na parte superior da exibição de lista de endpoints.
+-- MAGIC
+-- MAGIC <img src="https://learn.microsoft.com/pt-br/azure/databricks/_static/images/machine-learning/serving-endpoints-list.png" width="1200">
+-- MAGIC
+-- MAGIC
+-- MAGIC Para saber os modelos presentes, confira a documentação para ter a informação mais atualizada: [Modelos suportados](https://learn.microsoft.com/pt-br/azure/databricks/machine-learning/foundation-models/supported-models)
+-- MAGIC
+-- MAGIC
+-- MAGIC ### Testar as APIs de Foundation Models
+-- MAGIC
+-- MAGIC Para testar um dos modelos, você pode clicar nos 3 pontos ao lado de cada modelo fundacional e depois em **View details**. </br>
+-- MAGIC <img src="https://github.com/Gabriel-Rangel/lab_sql/blob/main/images/serving_endpoint_bb.png?raw=true" > </br></br>
+-- MAGIC Uma nova janela irá abrir, clique no icone da **seta** no canto superior direito em azul ao lado **Use** e depois clique em **Query** </br>
+-- MAGIC <img src="https://github.com/Gabriel-Rangel/lab_sql/blob/main/images/serving_endpoint_bb2.png?raw=true" >
+-- MAGIC
+-- MAGIC Para perguntar o que é Databricks e obter a resposta em português basta colar o seguint promt no campo **Request**:
+-- MAGIC
+-- MAGIC ```json
+-- MAGIC {
+-- MAGIC   "messages": [
+-- MAGIC     {
+-- MAGIC       "role": "user",
+-- MAGIC       "content": "Me explique o que é Databricks, em português?"
+-- MAGIC     }
+-- MAGIC   ],
+-- MAGIC   "max_tokens": 128
+-- MAGIC }
+-- MAGIC ```
+-- MAGIC
+-- MAGIC <img src="https://github.com/anasanchezss9/databricks_sql_e_openai/blob/main/images/query-endpoint.png?raw=true" width="1200">
+-- MAGIC
+-- MAGIC
+-- MAGIC ## Playgroud
+-- MAGIC
+-- MAGIC Você pode interagir com modelos LLMs que estão servidos no Databricks (customizados, foundation ou externos) através do Playground de IA. O Playground de IA é um ambiente semelhante ao chat em que você pode testar e comparar LLMs. 
+-- MAGIC
+-- MAGIC
+-- MAGIC ### Testar as APIs de Foundation Models pelo Playgroud
+-- MAGIC
+-- MAGIC Para usar o AI Playground:
+-- MAGIC
+-- MAGIC 1. Selecione Playground no painel de navegação esquerdo em Machine Learning.
+-- MAGIC
+-- MAGIC 3. Selecione o modelo com o qual deseja interagir usando a lista dropdown no canto superior esquerdo.
+-- MAGIC
+-- MAGIC 4. Você pode fazer o seguinte:
+-- MAGIC
+-- MAGIC 5. Digite seu prompt em `Add system prompt`:
+-- MAGIC ```
+-- MAGIC Um cliente deixou um comentário sobre um produto. Queremos acompanhar qualquer pessoa que pareça infeliz.
+-- MAGIC Extraia todas as entidades mencionadas. Para cada entidade:
+-- MAGIC - classificar o sentimento como ["positivo","neutro","negativo"]
+-- MAGIC - se o cliente requer acompanhamento: S ou N
+-- MAGIC - motivo para exigir acompanhamento
+-- MAGIC
+-- MAGIC Retorne SOMENTE JSON. Nenhum outro texto fora do JSON. Formato JSON:
+-- MAGIC [{
+-- MAGIC      "nome_do_produto": <nome do produto>,
+-- MAGIC      "sentiment": <revisar sentimento, um de ["positivo","neutro","negativo"]>,
+-- MAGIC      "acompanhamento": <S ou N para acompanhamento>,
+-- MAGIC      "motivo_acompanhamento": <motivo do acompanhamento>
+-- MAGIC }]
+-- MAGIC
+-- MAGIC Avaliação:
+-- MAGIC ```
+-- MAGIC
+-- MAGIC 6. Cole no chat uma avaliação de exemplo:
+-- MAGIC
+-- MAGIC ```Eu estava animado para aproveitar as ofertas da Black Friday, mas minha experiência com este cartão de crédito foi extremamente decepcionante. Durante o processo de compra, meu cartão foi bloqueado sem nenhum aviso prévio, impedindo-me de concluir minhas compras. Após contatar o suporte, levei muito tempo para resolver o problema, o que me fez perder as ofertas que eu queria. Este tipo de situação é inaceitável e me fez reconsiderar minha escolha por este cartão de crédito.```
+-- MAGIC
+-- MAGIC 7. Você pode selecionar + para adicionar um endpoint. Isso permite comparar múltiplas respostas de modelos lado a lado.
+-- MAGIC
+-- MAGIC <img src="https://learn.microsoft.com/pt-br/azure/databricks/_static/images/machine-learning/ai-playground.gif" width="1200">
+-- MAGIC
+-- MAGIC
+-- MAGIC
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ### Selecionar o modelo escolhido nas funções de IA
+-- MAGIC
+-- MAGIC No menu lateral _Machine Learning_ selecione `Models`e selecione o seu modelo preferido e clique em `Copy`.
+-- MAGIC
+-- MAGIC Documentação: [AI_QUERY](https://learn.microsoft.com/pt-br/azure/databricks/sql/language-manual/functions/ai_query)
+-- MAGIC
+
+-- COMMAND ----------
+
+select ai_query(
+  "databricks-meta-llama-3-1-8b-instruct", 
+  "Eu estava animado para aproveitar as ofertas da Black Friday, mas minha experiência com este cartão de crédito foi extremamente decepcionante. Durante o processo de compra, meu cartão foi bloqueado sem nenhum aviso prévio, impedindo-me de concluir minhas compras. Após contatar o suporte, levei muito tempo para resolver o problema, o que me fez perder as ofertas que eu queria. Este tipo de situação é inaceitável e me fez reconsiderar minha escolha por este cartão de crédito.")
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ## Referências
+-- MAGIC
+-- MAGIC | Documentação      | Link                                                                                       |
+-- MAGIC |-------------------|--------------------------------------------------------------------------------------------|
+-- MAGIC | Model Serving     | https://learn.microsoft.com/pt-pt/azure/databricks/machine-learning/model-serving/             |
+-- MAGIC | Foundation Models | https://learn.microsoft.com/pt-pt/azure/databricks/machine-learning/foundation-models/     |
+-- MAGIC | AI Playground     | https://learn.microsoft.com/pt-pt/azure/databricks/large-language-models/ai-playground |
+
+-- COMMAND ----------
+
+-- MAGIC %md # Parabéns!
+-- MAGIC
+-- MAGIC Você concluiu o laboratório de **Databricks SQL: Extraia valor dos dados com IA**!
+-- MAGIC
+-- MAGIC Agora, você já sabe como utilizar a Foundation Models, Playground e AI Functions para analisar o sentimento e identificar entidades em avaliações de produtos de forma simples e escalável!

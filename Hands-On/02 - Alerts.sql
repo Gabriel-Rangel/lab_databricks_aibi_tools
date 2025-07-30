@@ -1,0 +1,47 @@
+-- Databricks notebook source
+-- MAGIC %md
+-- MAGIC ## Alertas
+-- MAGIC
+-- MAGIC 1. **Navegue até a aba de Alertas**:
+-- MAGIC    - No menu lateral, em **`SQL`** clique em **`Alerts`**.
+-- MAGIC
+-- MAGIC 2. **Crie um novo alerta**:
+-- MAGIC    - Clique no botão "Create Alert".
+-- MAGIC
+-- MAGIC 3. **Configure o alerta**:
+-- MAGIC Para criar uma query para contar a quantidade de transações no mês atual, siga os seguintes passos:
+-- MAGIC    - **Nome**: Dê um nome ao seu alerta: `Alerta transações mês - SEU NOME`.
+-- MAGIC    - **SQL Query**: Insira a seguinte consulta SQL que será usada para verificar a condição do alerta e clique em **`Run`** .
+-- MAGIC
+-- MAGIC       ```sql
+-- MAGIC      SELECT sum(valor_da_fatura) as total_fatura
+-- MAGIC       FROM workshops_databricks.db_workshop_commom.tb_transacoes_silver
+-- MAGIC       WHERE MONTH(timestamp) = MONTH(CURRENT_DATE) 
+-- MAGIC       AND YEAR(timestamp) = YEAR(CURRENT_DATE);
+-- MAGIC      ```
+-- MAGIC
+-- MAGIC    - **Condition**: Defina o limiar que acionará o alerta (se o resultado da consulta for maior que um 20000).</br>
+-- MAGIC       `First row` `total_fatura` `>` </br>
+-- MAGIC       `Static Value` `20000`
+-- MAGIC    
+-- MAGIC    - **Schedule**: Defina o *schedule* que a consulta SQL do alerta será executada.
+-- MAGIC       `Every 1` `Hour` at `0 minutes past the hour`</br>
+-- MAGIC       `(UTC-03:00) Brasilia`
+-- MAGIC    
+-- MAGIC    - **Notification**: Pesquise pelo seu email
+-- MAGIC
+-- MAGIC 4. **Salve o alerta**:
+-- MAGIC    - Clique em "Create" e depois selecione a pasta onde seu alerta será salvo.
+-- MAGIC
+-- MAGIC ![](https://github.com/Gabriel-Rangel/lab_sql/blob/main/images/alert_bb.png?raw=true)
+-- MAGIC
+-- MAGIC 5. **Teste**: Clique em **`Run now`**
+-- MAGIC    - Aguarde alguns minutos e o e-mail chegar em sua caixa de entrada.
+-- MAGIC
+-- MAGIC 6. Do lado esquedo da interface clique em **`Pause`** para não ficar disparando.
+-- MAGIC
+-- MAGIC ![](https://github.com/Gabriel-Rangel/lab_sql/blob/main/images/alert_bb2.png?raw=true)
+-- MAGIC
+
+-- COMMAND ----------
+

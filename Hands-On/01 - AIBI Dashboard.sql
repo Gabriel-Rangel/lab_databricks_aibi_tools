@@ -1,0 +1,52 @@
+-- Databricks notebook source
+-- MAGIC %md
+-- MAGIC ## Criando um Dashboard no Databricks
+-- MAGIC
+-- MAGIC Para criar um dashboard no Databricks, siga os passos abaixo:
+-- MAGIC
+-- MAGIC 1. **Navegue até a área de Dashboards**:
+-- MAGIC    - No menu lateral, em **`SQL`** clique em **`Dashboards`**.
+-- MAGIC
+-- MAGIC 2. **Crie um novo Dashboard**:
+-- MAGIC    - Clique no botão **`Create Dashboard`**.
+-- MAGIC
+-- MAGIC 3. **Configure o Dashboard**:
+-- MAGIC    - **Nome**: Dê um nome ao seu dashboard, por exemplo, **`Dashboard de Análise de Transações e Churn - SEU NOME`**.
+-- MAGIC    - **Descrição**: Adicione uma descrição para o dashboard, como mostra na imagem.
+-- MAGIC
+-- MAGIC 4. **Adicione os Dados**:
+-- MAGIC    - Na aba **`Data`**, clique em **`+ Add data source`** e selecione o catálogo, schema e tabela que deseja utilizar no Dashboard.
+-- MAGIC    - **Tabelas**: 
+-- MAGIC       - _workshops_databricks.db_workshop_commom.tb_clientes_silver_
+-- MAGIC       - _workshops_databricks.db_workshop_commom.tb_transacoes_silver_
+-- MAGIC
+-- MAGIC 5. **Adicione um Text Box**:
+-- MAGIC    - Volte para o **`Canvas` e clique no menu azul inferior no botão que tem o símbolo de T dentro de um quadrado, ao colocar o mouse em cima dele, aparecerá **`Add a text box`**.
+-- MAGIC    - Clique duas vezes e edite o conteúdo:
+-- MAGIC    ``` 
+-- MAGIC       # Dashboards - Gerentes de Relacionamento
+-- MAGIC       Informações sobre clientes pessoa física, suas transações e suas propensões a evasão (churn).
+-- MAGIC    ```
+-- MAGIC
+-- MAGIC 6. **Adicione Gráficos**:
+-- MAGIC    - Clique no menu azul inferior no botão que tem o símbolo de um gráfico, ao colocar o mouse em cima dele, aparecerá **`Add a visualization`**.
+-- MAGIC    - Configure cada gráfico conforme a imagem abaixo.
+-- MAGIC
+-- MAGIC    Obs: Caso o gráfico sobre quantidade de transações não esteja gerando corretamente, no menu lateral esquerdo, selecione em **`Dataset`** a tabela transações e refaça o prompt.
+-- MAGIC
+-- MAGIC 7. **Organize os gráficos**:
+-- MAGIC    - Arraste e solte os gráficos para organizar o layout do dashboard conforme desejado.
+-- MAGIC
+-- MAGIC 8. **Adicione um filtro**:
+-- MAGIC    - Clique no menu azul inferior no botão que tem o símbolo de um funil, ao colocar o mouse em cima dele, aparecerá **`Add a filter`**.
+-- MAGIC    - Configure o filtro, clicando no menu lateral direito, em **`Fields`** busque pelo campo UF dentro da tabela de clientes.
+-- MAGIC
+-- MAGIC 9. **Publique o Dashboard**:
+-- MAGIC    - Clique em **`Publish`** para publicar o dashboard.
+-- MAGIC
+-- MAGIC ![](https://github.com/anasanchezss9/db_sql_lab/blob/main/images/dash.png?raw=true)
+-- MAGIC
+-- MAGIC Pronto! Seu dashboard no Databricks está configurado e pronto para uso.
+
+-- COMMAND ----------
+
